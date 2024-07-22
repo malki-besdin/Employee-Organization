@@ -1,0 +1,121 @@
+<form [formGroup]="employeeForm" (ngSubmit)="saveChanges()">
+  <div>
+    <label for="idEmployee">ID Employee</label>
+    <input id="idEmployee" formControlName="idEmployee" type="text">
+  </div>
+  <div>
+    <label for="firstName">First Name</label>
+    <input id="firstName" formControlName="firstName" type="text">
+  </div>
+  <div>
+    <label for="lastName">Last Name</label>
+    <input id="lastName" formControlName="lastName" type="text">
+  </div>
+  <div>
+    <label for="startWorksDate">Start Works Date</label>
+    <input id="startWorksDate" formControlName="startWorksDate" type="date">
+  </div>
+  <div>
+    <label for="dateOfBirth">Date of Birth</label>
+    <input id="dateOfBirth" formControlName="dateOfBirth" type="date">
+  </div>
+  <div>
+    <label for="sexFM">Sex</label>
+    <select id="sexFM" formControlName="sexFM">
+      <option value="M">Male</option>
+      <option value="F">Female</option>
+    </select>
+  </div>
+  <div>
+    <label for="roles">Roles</label>
+    <input id="roles" formControlName="roles" type="text">
+  </div>
+  <div>
+    <label for="status">Status</label>
+    <input id="status" formControlName="status" type="checkbox">
+  </div>
+  <button type="submit">Save Changes</button>
+</form>
+
+<div class="form-container">
+  <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+    <form [formGroup]="employeeForm" (ngSubmit)="saveChanges()">
+      <mat-step [stepControl]="employeeForm">
+        <ng-template matStepLabel>Fill out basic details</ng-template>
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="israely" formControlName="lastName" required requiredtype="text"
+            [ngModel]="employee?.lastName" name="lastName">
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input matInput placeholder="israel" formControlName="firstName" required requiredtype="text"
+            [ngModel]="employee?.firstName" name="firstName">
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <mat-label>Id</mat-label>
+          <input matInput placeholder="123456789" formControlName="idEmployee" required requiredtype="text"
+            [ngModel]="employee?.idEmployee" name="idEmployee">
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <mat-label>Start Works Date</mat-label>
+          <input matInput placeholder="01/01/2024" formControlName="startWorksDate" required requiredtype="dateOfBirth"
+            [ngModel]="employee?.startWorksDate | date" name="startWorksDate" type="date">
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="employeeForm">
+        <ng-template matStepLabel>Fill out more details</ng-template>
+        <mat-form-field>
+          <mat-label>Date of birth</mat-label>
+          <input matInput placeholder="01/01/2024" formControlName="dateOfBirth" required requiredtype="Date"
+            [ngModel]="employee?.dateOfBirth | date" name="dateOfBirth">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Sex </mat-label>
+          <mat-select formControlName="sexFM" required [ngModel]="employee?.sexFM" [value]="employee?.sexFM"
+            formControlName="sexFM" name="sexFM">
+            <mat-option value="1" ngDefaultControl>Male</mat-option>
+            <mat-option value="2">Female</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Roles</ng-template>
+        <ng-container *ngFor="let role of this.employee?.roles">
+          <mat-form-field>
+            <mat-label>role </mat-label>
+            <input matInput placeholder="roles" formControlName="roles" required requiredtype="text"
+              [ngModel]="employee?.roles" name="roles">
+          </mat-form-field>
+        </ng-container>
+
+        <mat-form-field>
+          <mat-label>Sex</mat-label>
+          <mat-select formControlName="sexFM" required [ngModel]="employee?.sexFM" name="sexFM">
+            <mat-option ngDefaultControl value="1">Male</mat-option>
+            <mat-option value="2">Female</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Add a type="submit" button in your last step for form submission -->
+        <button mat-button matStepperPrevious *ngIf="!isLinear">Back</button>
+        <button mat-button (click)="stepper.reset()" *ngIf="!isLinear">Reset</button>
+        <button type="submit" mat-button style="border:1px solid black">Save Changes</button>
+        <!-- <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button style="border:1px solid black" type="submit" >Save Changes</button> -->
+        <!-- לשנות את הכפתור שליחה שיהיה בסבמיט של הטופס ולא באונקליק!! -->
+        <!-- </div> -->
+      </mat-step>
+    </form>
+  </mat-stepper>
+</div>

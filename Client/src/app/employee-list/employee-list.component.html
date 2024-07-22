@@ -1,0 +1,89 @@
+<div class="actions">
+  <!-- Search -->
+  <mat-form-field class="example-full-width">
+    <input matInput type="text" placeholder="Search..." (keyup)="applyFilter($event)">
+    <mat-icon matSuffix class="search-icon">search</mat-icon>
+  </mat-form-field>
+  <!-- choose the number to show -->
+  <mat-paginator class="mat-paginator" [pageSizeOptions]="[ 10,15,20]" [pageSize]="10" showFirstLastButtons
+    aria-label="Select page of periodic elements" id="buttons">
+  </mat-paginator>
+</div>
+<!-- table of employee -->
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+    <ng-container matColumnDef="Num.Employee">
+      <th mat-header-cell *matHeaderCellDef> Num. Employee </th>
+      <td mat-cell *matCellDef="let element "> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef> Last Name </th>
+      <td mat-cell *matCellDef="let element "> {{element.lastName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef> First Name </th>
+      <td mat-cell *matCellDef="let element "> {{element.firstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id Employee </th>
+      <td mat-cell *matCellDef="let element "> {{element.idEmployee}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startWorksDate">
+      <th mat-header-cell *matHeaderCellDef> Start Works Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.startWorksDate |date:"dd/MM/yyyy"}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="editEmployee">
+      <th mat-header-cell *matHeaderCellDef>Edit Employee</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="editEmployee(element.idEmployee)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="deleteEmployee">
+      <th mat-header-cell *matHeaderCellDef>Delete Employee</th>
+      <td mat-cell *matCellDef="let employee">
+        <button mat-icon-button *ngIf="employee" (click)="deleteEmployee(employee)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button aria-label="expand row"
+          (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+          @if (expandedElement === element) {
+          <mat-icon>keyboard_arrow_up</mat-icon>
+          } @else {
+          <mat-icon>keyboard_arrow_down</mat-icon>
+          }
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="example-element-description">
+            <p>Date of birth: {{ element.dateOfBirth |date:'dd/MM/yyyy'}}</p>
+            <p>Gender: {{element.sexFM |gender}}</p>
+            <p>Roles: {{ element.roles }}</p>
+            <p>Managerial: {{ element.managerial ? 'Managerial' : 'Non-managerial' }}</p>
+            <p>Date of Entry: {{ element.startWorksDate | date: 'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand;" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === row"
+      (click)="expandedElement = expandedElement === row ? null : row">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
